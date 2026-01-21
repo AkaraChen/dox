@@ -137,3 +137,51 @@ func IsAtProjectReference(input string) bool {
 	isRef, _, _ := ParseAtProjectReference(input)
 	return isRef
 }
+
+// RemoteProject represents a resolved remote project reference
+type RemoteProject struct {
+	ProjectName     string
+	ProjectPath     string
+	RemainingCommand string
+}
+
+// ResolveRemoteProject parses and resolves an @project reference
+// Returns nil if input is not an @project reference
+// Returns error if project is not found in config
+func (c *GlobalConfig) ResolveRemoteProject(input string) (*RemoteProject, error) {
+	isRef, projectName, remainingCmd := ParseAtProjectReference(input)
+	if !isRef {
+		return nil, nil
+	}
+
+	projectPath, exists := c.ResolveProjectPath(projectName)
+	if !exists {
+		return nil, fmt.Errorf("project '%s' not found in global config", projectName)
+	}
+
+	return &RemoteProject{
+		ProjectName:      projectName,
+		ProjectPath:      projectPath,
+		RemainingCommand: remainingCmd,
+	}, nil
+}
+
+// ProjectInfo represents a project with its metadata
+type ProjectInfo struct {
+	Name        string
+	Path        string
+	Description string
+}
+
+// ListProjects returns all projects with their metadata
+func (c *GlobalConfig) ListProjects() []ProjectInfo {
+	projects := make([]ProjectInfo, 0, len(c.Projects))
+	for name, entry := range c.Projects {
+		projects = append(projects, ProjectInfo{
+			Name:        name,
+			Path:        entry.Path,
+			Description: entry.Description,
+		})
+	}
+	return projects
+}
