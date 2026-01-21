@@ -248,3 +248,74 @@ func resolveFile(file string) (string, error) {
 	}
 	return filepath.Join(dir, file), nil
 }
+
+// resolveAlias resolves an alias definition into commands
+func resolveAlias(aliasDef string) ([][]string, error) {
+	if aliasDef == "" {
+		return nil, fmt.Errorf("empty alias definition")
+	}
+
+	// Split by && to find chained commands
+	parts := strings.Split(aliasDef, "&&")
+	commands := make([][]string, 0, len(parts))
+
+	builder, err := getComposeBuilder()
+	if err != nil {
+		return nil, err
+	}
+
+	for _, part := range parts {
+		cmd := strings.Fields(strings.TrimSpace(part))
+		if len(cmd) == 0 {
+			continue
+		}
+
+		// Check if this is a known command
+		if isKnownCommand(cmd[0]) {
+			// Build the appropriate docker compose command
+			var fullCmd []string
+			switch cmd[0] {
+			case "up":
+				fullCmd, _ = builder.BuildUp(cmd[1:])
+			case "down":
+				fullCmd, _ = builder.BuildDown(cmd[1:])
+			case "ps":
+				fullCmd, _ = builder.BuildPs(cmd[1:])
+			case "logs":
+				fullCmd, _ = builder.BuildLogs(cmd[1:])
+			case "restart":
+				fullCmd, _ = builder.BuildRestart(cmd[1:])
+			case "exec":
+				fullCmd, _ = builder.BuildExec(cmd[1:])
+			case "build":
+				fullCmd, _ = builder.BuildBuild(cmd[1:])
+			default:
+				// Unknown command, pass through as-is
+				fullCmd = []string{"docker", "compose"}
+				fullCmd = append(fullCmd, cmd...)
+			}
+			commands = append(commands, fullCmd)
+		} else {
+			// Pass through command (could be a shell command)
+			commands = append(commands, cmd)
+		}
+	}
+
+	return commands, nil
+}
+
+// isKnownCommand checks if a command word is a known docker compose subcommand
+func isKnownCommand(cmd string) bool {
+	knownCommands := []string{
+		"up", "down", "ps", "logs", "restart", "exec", "build",
+		"pull", "push", "start", "stop", "rm", "kill", "run",
+		"pause", "unpause", "top", "events", "port", "config",
+		"create", "version",
+	}
+	for _, known := range knownCommands {
+		if cmd == known {
+			return true
+		}
+	}
+	return false
+}
