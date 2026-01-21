@@ -1,0 +1,9 @@
+# Override web service, add new service
+services:
+  web:
+    ports:
+      - "9090:80"  # Override port
+    environment:
+      - ENV=production
+  cache:
+    image: redis:alpine

@@ -229,3 +229,174 @@ func TestParseAtProjectReference(t *testing.T) {
 		})
 	}
 }
+
+func TestGetAlias(t *testing.T) {
+	cfg := &GlobalConfig{
+		Aliases: map[string]string{
+			"refresh": "down && up --build -d",
+			"clean":   "down -v --remove-orphans",
+		},
+	}
+
+	// Test existing alias
+	alias, found := cfg.GetAlias("refresh")
+	assert.True(t, found)
+	assert.Equal(t, "down && up --build -d", alias)
+
+	// Test non-existent alias
+	alias, found = cfg.GetAlias("nonexistent")
+	assert.False(t, found)
+	assert.Empty(t, alias)
+}
+
+func TestGetAlias_EmptyAliases(t *testing.T) {
+	cfg := &GlobalConfig{
+		Aliases: map[string]string{},
+	}
+
+	alias, found := cfg.GetAlias("anything")
+	assert.False(t, found)
+	assert.Empty(t, alias)
+}
+
+func TestGetAlias_NilAliases(t *testing.T) {
+	cfg := &GlobalConfig{
+		Aliases: nil,
+	}
+
+	alias, found := cfg.GetAlias("anything")
+	assert.False(t, found)
+	assert.Empty(t, alias)
+}
+
+func TestHasProject(t *testing.T) {
+	cfg := &GlobalConfig{
+		Projects: map[string]ProjectEntry{
+			"webapp": {Path: "/home/user/webapp"},
+			"api":    {Path: "/home/user/api"},
+		},
+	}
+
+	assert.True(t, cfg.HasProject("webapp"))
+	assert.True(t, cfg.HasProject("api"))
+	assert.False(t, cfg.HasProject("nonexistent"))
+}
+
+func TestHasProject_EmptyProjects(t *testing.T) {
+	cfg := &GlobalConfig{
+		Projects: map[string]ProjectEntry{},
+	}
+
+	assert.False(t, cfg.HasProject("anything"))
+}
+
+func TestHasProject_NilProjects(t *testing.T) {
+	cfg := &GlobalConfig{
+		Projects: nil,
+	}
+
+	assert.False(t, cfg.HasProject("anything"))
+}
+
+func TestProjectNames(t *testing.T) {
+	cfg := &GlobalConfig{
+		Projects: map[string]ProjectEntry{
+			"webapp": {Path: "/home/user/webapp"},
+			"api":    {Path: "/home/user/api"},
+			"db":     {Path: "/home/user/db"},
+		},
+	}
+
+	names := cfg.ProjectNames()
+	assert.Len(t, names, 3)
+
+	// Convert to set for easier checking
+	nameSet := make(map[string]bool)
+	for _, name := range names {
+		nameSet[name] = true
+	}
+	assert.True(t, nameSet["webapp"])
+	assert.True(t, nameSet["api"])
+	assert.True(t, nameSet["db"])
+}
+
+func TestProjectNames_Empty(t *testing.T) {
+	cfg := &GlobalConfig{
+		Projects: map[string]ProjectEntry{},
+	}
+
+	names := cfg.ProjectNames()
+	assert.Empty(t, names)
+}
+
+func TestProjectNames_Nil(t *testing.T) {
+	cfg := &GlobalConfig{
+		Projects: nil,
+	}
+
+	names := cfg.ProjectNames()
+	assert.Empty(t, names)
+}
+
+func TestAliasNames(t *testing.T) {
+	cfg := &GlobalConfig{
+		Aliases: map[string]string{
+			"refresh": "down && up",
+			"clean":   "down -v",
+			"rebuild": "up --build",
+		},
+	}
+
+	names := cfg.AliasNames()
+	assert.Len(t, names, 3)
+
+	// Convert to set for easier checking
+	nameSet := make(map[string]bool)
+	for _, name := range names {
+		nameSet[name] = true
+	}
+	assert.True(t, nameSet["refresh"])
+	assert.True(t, nameSet["clean"])
+	assert.True(t, nameSet["rebuild"])
+}
+
+func TestAliasNames_Empty(t *testing.T) {
+	cfg := &GlobalConfig{
+		Aliases: map[string]string{},
+	}
+
+	names := cfg.AliasNames()
+	assert.Empty(t, names)
+}
+
+func TestAliasNames_Nil(t *testing.T) {
+	cfg := &GlobalConfig{
+		Aliases: nil,
+	}
+
+	names := cfg.AliasNames()
+	assert.Empty(t, names)
+}
+
+func TestIsAtProjectReference(t *testing.T) {
+	tests := []struct {
+		name  string
+		input string
+		want  bool
+	}{
+		{"valid project ref", "@myproject", true},
+		{"valid with command", "@myproject c up", true},
+		{"no at sign", "myproject c up", false},
+		{"at only", "@", false},
+		{"at in middle", "my@project", false},
+		{"empty string", "", false},
+		{"at with space", "@ myproject", false},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			got := IsAtProjectReference(tt.input)
+			assert.Equal(t, tt.want, got)
+		})
+	}
+}

@@ -16,3 +16,5 @@ Use `@/openspec/AGENTS.md` to learn:
 Keep this managed block so 'openspec update' can refresh the instructions.
 
 <!-- OPENSPEC:END -->
+
+You are a manager and an agent orchestrator. You must never perform implementations yourself; instead, delegate everything to sub-agents or task agents. Break down tasks into ultra-granular steps and establish a PDCA cycle.

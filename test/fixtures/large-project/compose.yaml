@@ -1,0 +1,6 @@
+# Base compose file
+services:
+  app:
+    image: app:latest
+  db:
+    image: postgres:15

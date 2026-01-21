@@ -1,0 +1,28 @@
+# Complex alias definitions
+aliases:
+  # Simple command
+  simple: "up -d"
+
+  # Chained commands
+  chained: "down && up -d"
+
+  # Multiple chains
+  multi: "down -v && up --build -d && ps"
+
+  # Quoted arguments
+  quoted: 'exec app echo "hello world"'
+
+  # Mixed quotes
+  mixed: "exec app echo 'test' && logs"
+
+  # Complex pipeline
+  pipeline: "down -v --remove-orphans && up --build -d && logs -f --tail 50"
+
+  # With service name
+  with-service: "restart app && logs app"
+
+  # Environment variables in command
+  with-env: "up -d && exec app sh -c 'echo $PATH'"
+
+  # Multiple services
+  multi-service: "restart app && restart db && ps"

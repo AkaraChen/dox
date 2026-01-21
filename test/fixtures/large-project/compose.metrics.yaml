@@ -1,0 +1,3 @@
+services:
+  metrics:
+    image: metricsatest

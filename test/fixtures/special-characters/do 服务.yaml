@@ -1,0 +1,4 @@
+# Chinese filename - unicode test
+services:
+  app:
+    image: nginx:alpine

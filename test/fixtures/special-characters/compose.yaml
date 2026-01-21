@@ -1,0 +1,8 @@
+services:
+  web:
+    image: nginx:alpine
+    environment:
+      - MESSAGE=Hello 世界 🌍
+  app:
+    image: alpine:latest
+    command: echo "test"

@@ -1,0 +1,12 @@
+# Hooks that fail for testing error handling
+hooks:
+  pre_up:
+    - "echo 'This will succeed'"
+    - "exit 1"  # This will fail
+    - "echo 'This should not run'"
+
+  post_up:
+    - "echo 'Post up should not run if pre_up fails'"
+
+  pre_down:
+    - "echo 'Pre down hook'"
