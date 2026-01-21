@@ -1,0 +1,12 @@
+version: 1
+
+defaults:
+  profile: dev
+
+profiles:
+  dev:
+    slices: [dev]
+
+aliases:
+  fresh: "down -v && up --build -d"
+  restart-all: "down && up -d"

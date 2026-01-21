@@ -1,0 +1,7 @@
+version: 1
+
+profiles:
+  dev:
+    slices: [missing-slice]
+
+# This tests error when slice file doesn't exist

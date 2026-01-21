@@ -1,0 +1,12 @@
+version: 1
+
+defaults:
+  profile: dev
+
+profiles:
+  dev:
+    slices: [dev]
+  prod:
+    slices: [prod]
+  full:
+    slices: [dev, prod]

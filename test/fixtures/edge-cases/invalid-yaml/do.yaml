@@ -1,0 +1,5 @@
+version: 1
+  invalid: yaml: syntax
+    badly: indented
+
+# This tests error handling for malformed YAML

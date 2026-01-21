@@ -1,0 +1,15 @@
+version: 1
+
+profiles:
+  dev:
+    slices: [dev]
+
+hooks:
+  pre_up:
+    - echo "Starting services..."
+    - echo "Check dependencies..."
+  post_up:
+    - echo "Services are ready!"
+    - echo "Open http://localhost:3000"
+  pre_down:
+    - echo "Stopping services..."

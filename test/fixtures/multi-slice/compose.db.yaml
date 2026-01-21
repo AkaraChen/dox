@@ -1,0 +1,9 @@
+# Database service
+services:
+  db:
+    image: postgres:16
+    environment:
+      - POSTGRES_PASSWORD=secret
+      - POSTGRES_DB=myapp
+    ports:
+      - "5432:5432"

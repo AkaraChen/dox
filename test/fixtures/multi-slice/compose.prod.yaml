@@ -1,0 +1,6 @@
+# Production overrides
+services:
+  web:
+    environment:
+      - ENV=production
+    restart: always

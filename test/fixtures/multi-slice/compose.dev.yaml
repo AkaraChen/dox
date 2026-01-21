@@ -1,0 +1,7 @@
+# Development overrides
+services:
+  web:
+    environment:
+      - ENV=dev
+    volumes:
+      - ./src:/app

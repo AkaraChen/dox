@@ -1,0 +1,6 @@
+services:
+  web:
+    image: nginx:alpine
+  api:
+    image: myapi:latest
+    build: .

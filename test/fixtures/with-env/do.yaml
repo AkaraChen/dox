@@ -1,0 +1,13 @@
+version: 1
+
+env_files:
+  dev: .env.dev
+  prod: .env.prod
+
+profiles:
+  dev:
+    slices: [dev]
+    env: dev
+  prod:
+    slices: [prod]
+    env: prod
