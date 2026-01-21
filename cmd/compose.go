@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"strings"
 
 	composepkg "github.com/akrc/do/internal/compose"
 	"github.com/akrc/do/internal/config"
@@ -39,43 +40,106 @@ func init() {
 func getComposeBuilder() (*Builder, error) {
 	dir, err := os.Getwd()
 	if err != nil {
-	 return nil, err
+		return nil, err
 	}
 
 	// Load config if exists
 	cfg, _, err := config.LoadConfigFromDirectory(dir)
 	if err != nil {
-	 return nil, err
+		return nil, err
 	}
 
 	// Use profile from flag or config
 	profileToUse := profile
 	if profileToUse == "" && cfg != nil {
-	 profileToUse = cfg.GetDefaultProfile()
+		profileToUse = cfg.GetDefaultProfile()
 	}
 
 	return composepkg.NewBuilder(dir, cfg, profileToUse), nil
+}
+
+// getConfig returns the config for current directory
+func getConfig() (*config.Config, error) {
+	dir, err := os.Getwd()
+	if err != nil {
+		return nil, err
+	}
+
+	cfg, _, err := config.LoadConfigFromDirectory(dir)
+	return cfg, err
 }
 
 // getComposeExecutor creates an executor with current settings
 func getComposeExecutor() *composepkg.Executor {
 	executor := composepkg.NewExecutor(IsDryRun())
 	if IsVerbose() {
-	 executor.SetEnv([]string{"DOCKER_COMPOSE_VERBOSE=1"})
+		executor.SetEnv([]string{"DOCKER_COMPOSE_VERBOSE=1"})
 	}
 	return executor
 }
 
-// executeCommand builds and executes a command
+// executeHooks executes hooks for a given hook type
+func executeHooks(hookType string) error {
+	cfg, err := getConfig()
+	if err != nil {
+		return err
+	}
+
+	if cfg == nil || cfg.Hooks == nil {
+		return nil
+	}
+
+	hooks, exists := cfg.Hooks[hookType]
+	if !exists || len(hooks) == 0 {
+		return nil
+	}
+
+	executor := getComposeExecutor()
+	dir, _ := os.Getwd()
+	executor.SetDir(dir)
+
+	if IsVerbose() {
+		fmt.Printf("Executing %s hooks...\n", hookType)
+	}
+
+	for _, hook := range hooks {
+		if IsDryRun() || IsVerbose() {
+			fmt.Printf("  hook: %s\n", hook)
+		}
+
+		if IsDryRun() {
+			continue
+		}
+
+		// Parse hook command
+		cmd := parseHookCommand(hook)
+		if _, err := executor.RunCommand(cmd); err != nil {
+			return fmt.Errorf("hook failed: %s\nError: %w", hook, err)
+		}
+	}
+
+	return nil
+}
+
+// parseHookCommand parses a hook string into command arguments
+func parseHookCommand(hook string) []string {
+	// Simple parsing - split by spaces
+	// TODO: Handle quoted arguments properly
+	return strings.Fields(hook)
+}
+
+// executeCommand builds and executes a command with hooks
 func executeCommand(buildFunc func(*Builder, []string) ([]string, error), args []string) error {
+	// Execute pre hooks if this is an 'up' command
+	// Determine command type from the build function
 	builder, err := getComposeBuilder()
 	if err != nil {
-	 return err
+		return err
 	}
 
 	cmd, err := buildFunc(builder, args)
 	if err != nil {
-	 return err
+		return err
 	}
 
 	executor := getComposeExecutor()
@@ -84,29 +148,67 @@ func executeCommand(buildFunc func(*Builder, []string) ([]string, error), args [
 	dir, _ := os.Getwd()
 	executor.SetDir(dir)
 
+	// Check if this is an 'up' command and run pre_up hooks
+	if len(cmd) > 0 && cmd[len(cmd)-1] == "up" {
+		if err := executeHooks("pre_up"); err != nil {
+			return err
+		}
+	}
+
+	// Check if this is a 'down' command and run pre_down hooks
+	if len(cmd) > 0 && cmd[len(cmd)-1] == "down" {
+		if err := executeHooks("pre_down"); err != nil {
+			return err
+		}
+	}
+
 	if IsDryRun() || IsVerbose() {
-	 output := composepkg.FormatCommand(cmd)
-	 printCommand(output)
+		output := composepkg.FormatCommand(cmd)
+		printCommand(output)
 	}
 
 	if IsDryRun() {
-	 return nil
+		// Show post hooks in dry-run mode
+		if len(cmd) > 0 && cmd[len(cmd)-1] == "up" {
+			executeHooks("post_up")
+		}
+		if len(cmd) > 0 && cmd[len(cmd)-1] == "down" {
+			executeHooks("post_down")
+		}
+		return nil
 	}
 
 	_, err = executor.RunCommand(cmd)
-	return err
+	if err != nil {
+		return err
+	}
+
+	// Execute post hooks after successful command
+	if len(cmd) > 0 && cmd[len(cmd)-1] == "up" {
+		if err := executeHooks("post_up"); err != nil {
+			return err
+		}
+	}
+
+	if len(cmd) > 0 && cmd[len(cmd)-1] == "down" {
+		if err := executeHooks("post_down"); err != nil {
+			return err
+		}
+	}
+
+	return nil
 }
 
 // executeCommands builds and executes multiple commands
 func executeCommands(buildFunc func(*Builder) ([][]string, error)) error {
 	builder, err := getComposeBuilder()
 	if err != nil {
-	 return err
+		return err
 	}
 
 	commands, err := buildFunc(builder)
 	if err != nil {
-	 return err
+		return err
 	}
 
 	executor := getComposeExecutor()
@@ -116,14 +218,14 @@ func executeCommands(buildFunc func(*Builder) ([][]string, error)) error {
 	executor.SetDir(dir)
 
 	if IsDryRun() || IsVerbose() {
-	 for _, cmd := range commands {
-   output := composepkg.FormatCommand(cmd)
-   printCommand(output)
-	 }
+		for _, cmd := range commands {
+			output := composepkg.FormatCommand(cmd)
+			printCommand(output)
+		}
 	}
 
 	if IsDryRun() {
-	 return nil
+		return nil
 	}
 
 	_, err = executor.RunCommands(commands)
@@ -138,11 +240,11 @@ func printCommand(cmd string) {
 // resolveFile resolves a -f flag to an absolute path
 func resolveFile(file string) (string, error) {
 	if filepath.IsAbs(file) {
-	 return file, nil
+		return file, nil
 	}
 	dir, err := os.Getwd()
 	if err != nil {
-	 return "", err
+		return "", err
 	}
 	return filepath.Join(dir, file), nil
 }

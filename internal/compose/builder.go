@@ -238,6 +238,18 @@ func (b *Builder) BuildDup() ([][]string, error) {
 	return [][]string{downCmd, upCmd}, nil
 }
 
+// BuildStatus builds the status command (enhanced ps)
+func (b *Builder) BuildStatus(args []string) ([]string, error) {
+	cmd, err := b.buildBase()
+	if err != nil {
+	 return nil, err
+	}
+
+	cmd = append(cmd, "ps")
+	cmd = append(cmd, args...)
+	return cmd, nil
+}
+
 // String converts a command slice to a string
 func (b *Builder) String(cmd []string) string {
 	return strings.Join(cmd, " ")
