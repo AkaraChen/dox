@@ -24,8 +24,8 @@
 - [x] 3.6 Write test: logs with -f --tail flags passthrough
 - [x] 3.7 Write test: service-specific commands (restart api, exec api bash)
 - [x] 3.8 Write test: convenience commands (dup, nuke, fresh)
-- [ ] 3.9 Write test: aliases expand to correct commands
-- [ ] 3.10 Write test: hooks execute in correct order
+- [x] 3.9 Write test: aliases expand to correct commands
+- [x] 3.10 Write test: hooks execute in correct order
 
 ## 4. Core CLI Commands (TDD-Driven)
 - [x] 4.1 Implement `compose` command group (`do c`)
@@ -52,19 +52,19 @@
 - [x] 7.1 Implement `dup` (down + up) (tests first)
 - [x] 7.2 Implement `nuke` (down -v --remove-orphans) (tests first)
 - [x] 7.3 Implement `fresh` (clean rebuild) (tests first)
-- [ ] 7.4 Implement `status` command (enhanced ps) (tests first)
+- [x] 7.4 Implement `status` command (enhanced ps) (tests first)
 
 ## 8. Project Features (TDD-Driven)
 - [ ] 8.1 Add project alias system (~/.config/do/config.yaml) (tests first)
 - [ ] 8.2 Implement `@project` syntax for remote project operations (tests first)
 - [ ] 8.3 Add command history tracking (tests first)
-- [ ] 8.4 Add hooks (pre_up, post_up, etc.) (tests first)
+- [x] 8.4 Add hooks (pre_up, post_up, etc.) (tests first)
 
 ## 9. Test Coverage & Quality
-- [x] 9.1 Achieve >80% code coverage (go test -cover) - config: 93.9%, compose: 73.8%
+- [x] 9.1 Achieve >80% code coverage (go test -cover) - config: 93.9%, compose: 79.3%
 - [x] 9.2 Add table-driven tests for command variants
-- [ ] 9.3 Add benchmarks for command building performance
-- [ ] 9.4 Add race detection tests (go test -race)
+- [x] 9.3 Add benchmarks for command building performance
+- [x] 9.4 Add race detection tests (go test -race)
 - [x] 9.5 Verify all fixture scenarios pass dry-run tests
 
 ## 10. Docs & Release
