@@ -61,11 +61,13 @@
 - [x] 8.4 Add hooks (pre_up, post_up, etc.) (tests first)
 
 ## 9. Test Coverage & Quality
-- [x] 9.1 Achieve >80% code coverage (go test -cover) - config: 93.9%, compose: 79.3%
+- [x] 9.1 Achieve >80% code coverage (go test -cover) - cmd: 54.3%, config: 93.9%, compose: 86.2%, project: 93.9%
 - [x] 9.2 Add table-driven tests for command variants
-- [x] 9.3 Add benchmarks for command building performance
-- [x] 9.4 Add race detection tests (go test -race)
+- [x] 9.3 Add benchmarks for command building performance (all <1ms)
+- [x] 9.4 Add race detection tests (go test -race) - all pass
 - [x] 9.5 Verify all fixture scenarios pass dry-run tests
+- [x] 9.6 Add edge case tests (empty maps, nil pointers, error paths)
+- [x] 9.7 Add complex fixtures (large-project, complex-aliases, hook-failures)
 
 ## 10. Docs & Release
 - [x] 10.1 Write README with usage examples
