@@ -40,7 +40,7 @@
 - [x] 5.2 Add compose file auto-discovery logic (tests first)
 - [x] 5.3 Add profile resolution (merge base + slices) (tests first)
 - [x] 5.4 Add environment file support per profile (tests first)
-- [ ] 5.5 Add project alias support (tests first)
+- [x] 5.5 Add project alias support (tests first)
 
 ## 6. Docker Command Builder (TDD-Driven)
 - [x] 6.1 Build docker compose command with -f flags (tests first)
@@ -55,9 +55,9 @@
 - [x] 7.4 Implement `status` command (enhanced ps) (tests first)
 
 ## 8. Project Features (TDD-Driven)
-- [ ] 8.1 Add project alias system (~/.config/do/config.yaml) (tests first)
-- [ ] 8.2 Implement `@project` syntax for remote project operations (tests first)
-- [ ] 8.3 Add command history tracking (tests first)
+- [x] 8.1 Add project alias system (~/.config/do/config.yaml) (tests first)
+- [x] 8.2 Implement `@project` syntax for remote project operations (tests first)
+- [x] 8.3 Add command history tracking (tests first)
 - [x] 8.4 Add hooks (pre_up, post_up, etc.) (tests first)
 
 ## 9. Test Coverage & Quality
@@ -68,7 +68,7 @@
 - [x] 9.5 Verify all fixture scenarios pass dry-run tests
 
 ## 10. Docs & Release
-- [ ] 10.1 Write README with usage examples
+- [x] 10.1 Write README with usage examples
 - [ ] 10.2 Add man page generation
 - [x] 10.3 Add build script for multiple platforms (Makefile)
 - [ ] 10.4 Set up GitHub Actions for CI/CD with test gating
