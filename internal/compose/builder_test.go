@@ -2,9 +2,10 @@ package compose
 
 import (
 	"path/filepath"
+	"slices"
 	"testing"
 
-	"github.com/akrc/dox/internal/config"
+	"github.com/AkaraChen/dox/internal/config"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
@@ -294,7 +295,7 @@ func TestBuildCommand_NoComposeFiles(t *testing.T) {
 
 // Helper functions
 
-func setupFixture(t *testing.T, name string) string {
+func setupFixture(_ *testing.T, name string) string {
 	return filepath.Join("..", "..", "test", "fixtures", name)
 }
 
@@ -309,12 +310,7 @@ func countFlag(slice []string, flag string) int {
 }
 
 func sliceContains(slice []string, item string) bool {
-	for _, s := range slice {
-	 if s == item {
-   return true
-	 }
-	}
-	return false
+	return slices.Contains(slice, item)
 }
 
 func loadConfigFromDir(dir string) (*config.Config, string, error) {

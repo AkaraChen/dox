@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/akrc/dox/internal/config"
+	"github.com/AkaraChen/dox/internal/config"
 )
 
 // Builder builds docker compose commands

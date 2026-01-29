@@ -5,7 +5,7 @@ import (
 	"os"
 	"sort"
 
-	composepkg "github.com/akrc/dox/internal/compose"
+	composepkg "github.com/AkaraChen/dox/internal/compose"
 	"github.com/spf13/cobra"
 )
 

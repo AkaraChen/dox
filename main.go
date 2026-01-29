@@ -1,7 +1,7 @@
 package main
 
 import (
-	commands "github.com/akrc/dox/cmd"
+	commands "github.com/AkaraChen/dox/cmd"
 )
 
 func main() {

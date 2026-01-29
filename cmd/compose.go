@@ -4,10 +4,11 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"slices"
 	"strings"
 
-	composepkg "github.com/akrc/dox/internal/compose"
-	"github.com/akrc/dox/internal/config"
+	composepkg "github.com/AkaraChen/dox/internal/compose"
+	"github.com/AkaraChen/dox/internal/config"
 	"github.com/spf13/cobra"
 )
 
@@ -237,7 +238,9 @@ func printCommand(cmd string) {
 	fmt.Println(cmd)
 }
 
-// resolveFile resolves a -f flag to an absolute path
+// resolveFile resolves a -f flag to an absolute path (used in tests)
+//
+//nolint:unused // tested via compose_internal_test.go
 func resolveFile(file string) (string, error) {
 	if filepath.IsAbs(file) {
 		return file, nil
@@ -312,10 +315,5 @@ func isKnownCommand(cmd string) bool {
 		"pause", "unpause", "top", "events", "port", "config",
 		"create", "version",
 	}
-	for _, known := range knownCommands {
-		if cmd == known {
-			return true
-		}
-	}
-	return false
+	return slices.Contains(knownCommands, cmd)
 }

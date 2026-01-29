@@ -16,10 +16,10 @@ Docker Compose projects often span multiple files (base, dev, prod, db, etc.). T
 
 ```bash
 # Build from source
-go install github.com/akrc/dox@latest
+go install github.com/AkaraChen/dox@latest
 
 # Or build locally
-git clone https://github.com/akrc/dox.git
+git clone https://github.com/AkaraChen/dox.git
 cd dox
 make build
 ```
