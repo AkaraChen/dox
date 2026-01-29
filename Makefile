@@ -1,7 +1,7 @@
 .PHONY: test build clean install
 
 # Build variables
-BINARY_NAME=do
+BINARY_NAME=dox
 BUILD_DIR=build
 VERSION?=$(shell git describe --tags --always --dirty 2>/dev/null || echo "dev")
 LDFLAGS=-ldflags "-X main.version=$(VERSION)"

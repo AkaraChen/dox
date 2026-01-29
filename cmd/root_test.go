@@ -13,7 +13,7 @@ import (
 func TestGetRoot(t *testing.T) {
 	root := GetRoot()
 	assert.NotNil(t, root)
-	assert.Equal(t, "do", root.Use)
+	assert.Equal(t, "dox", root.Use)
 }
 
 func TestIsVerbose_Default(t *testing.T) {

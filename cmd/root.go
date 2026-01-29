@@ -15,9 +15,9 @@ var (
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
-	Use:   "do",
+	Use:   "dox",
 	Short: "Docker Compose wrapper for simplified multi-file management",
-	Long: `do is a CLI wrapper for Docker Compose that simplifies working with
+	Long: `dox is a CLI wrapper for Docker Compose that simplifies working with
 multiple compose files (slices) and environment-specific configurations.
 
 It auto-discovers compose.yaml and slice files (compose.*.yaml), supports

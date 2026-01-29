@@ -8,7 +8,7 @@ import (
 var sCmd = &cobra.Command{
 	Use:   "s",
 	Short: "Shorthand for status",
-	Long:  `Shorthand for 'do c status'. Shows enhanced status of services.`,
+	Long:  `Shorthand for 'dox c status'. Shows enhanced status of services.`,
 	Args: cobra.ArbitraryArgs,
 	RunE: func(cmd *cobra.Command, args []string) error {
 	 return executeCommand(func(b *Builder, a []string) ([]string, error) {

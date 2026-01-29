@@ -1,4 +1,4 @@
-module github.com/akrc/do
+module github.com/akrc/dox
 
 go 1.25.5
 

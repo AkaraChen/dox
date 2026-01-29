@@ -1,11 +1,11 @@
 ---
-name: do-yaml
-description: "Create and configure do.yaml files for the Docker Compose wrapper CLI. Use when the user asks to: (1) Create or set up a do.yaml configuration file, (2) Add profiles, aliases, or hooks to their Docker Compose setup, (3) Configure environment-specific compose files like dev/prod/staging, (4) Set up automation hooks for container lifecycle events, (5) Define command shortcuts for common Docker Compose operations. The do.yaml file is the project-local configuration for the 'do' CLI tool that simplifies multi-file Docker Compose setups."
+name: dox-yaml
+description: "Create and configure dox.yaml files for the Docker Compose wrapper CLI. Use when the user asks to: (1) Create or set up a dox.yaml configuration file, (2) Add profiles, aliases, or hooks to their Docker Compose setup, (3) Configure environment-specific compose files like dev/prod/staging, (4) Set up automation hooks for container lifecycle events, (5) Define command shortcuts for common Docker Compose operations. The dox.yaml file is the project-local configuration for the 'dox' CLI tool that simplifies multi-file Docker Compose setups."
 ---
 
-# do.yaml Configuration Creator
+# dox.yaml Configuration Creator
 
-Create and configure `do.yaml` files for the Docker Compose wrapper CLI.
+Create and configure `dox.yaml` files for the Docker Compose wrapper CLI.
 
 ## Quick Start
 
@@ -15,7 +15,7 @@ Ask the user what they need:
 2. **Environments** - dev, prod, staging, etc.?
 3. **Automation needs** - Pre/post hooks? Command aliases?
 
-Then create `do.yaml` in the project root.
+Then create `dox.yaml` in the project root.
 
 ## Schema Reference
 
@@ -91,7 +91,7 @@ aliases:
   clean: "down -v --remove-orphans"
 ```
 
-Usage: `do c fresh`, `do c restart-all`
+Usage: `dox c fresh`, `dox c restart-all`
 
 ### Hooks
 
@@ -119,7 +119,7 @@ Hooks:
 ## File Discovery Priority
 
 1. Explicit `-f` flags (highest)
-2. `do.yaml` profile configuration
+2. `dox.yaml` profile configuration
 3. Auto-discovery
 
 ## Common Patterns
@@ -186,5 +186,5 @@ Files: `compose.yaml`, `compose.base.yaml`, `compose.app.yaml`, `compose.db.yaml
 1. Ask about project structure and environments
 2. Determine needed profiles and slices
 3. Add optional features (aliases, hooks, env_files)
-4. Create `do.yaml` in project root
+4. Create `dox.yaml` in project root
 5. Verify the file exists and is valid YAML

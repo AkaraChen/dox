@@ -10,7 +10,7 @@
 ## 2. Test Fixtures Creation (Before Implementation)
 - [x] 2.1 Create fixture: simple project (compose.yaml only)
 - [x] 2.2 Create fixture: multi-slice project (base + dev + prod + db)
-- [x] 2.3 Create fixture: project with do.yaml profiles
+- [x] 2.3 Create fixture: project with dox.yaml profiles
 - [x] 2.4 Create fixture: project with aliases and hooks
 - [x] 2.5 Create fixture: project with env files per profile
 - [x] 2.6 Create fixture: edge cases (no compose, invalid yaml, circular inheritance)
@@ -36,7 +36,7 @@
 - [x] 4.6 Implement shorthand service commands (restart, exec, build) (tests first)
 
 ## 5. Configuration System (TDD-Driven)
-- [x] 5.1 Implement do.yaml config parser (tests first)
+- [x] 5.1 Implement dox.yaml config parser (tests first)
 - [x] 5.2 Add compose file auto-discovery logic (tests first)
 - [x] 5.3 Add profile resolution (merge base + slices) (tests first)
 - [x] 5.4 Add environment file support per profile (tests first)
@@ -55,7 +55,7 @@
 - [x] 7.4 Implement `status` command (enhanced ps) (tests first)
 
 ## 8. Project Features (TDD-Driven)
-- [x] 8.1 Add project alias system (~/.config/do/config.yaml) (tests first)
+- [x] 8.1 Add project alias system (~/.config/dox/config.yaml) (tests first)
 - [x] 8.2 Implement `@project` syntax for remote project operations (tests first)
 - [x] 8.3 Add command history tracking (tests first)
 - [x] 8.4 Add hooks (pre_up, post_up, etc.) (tests first)

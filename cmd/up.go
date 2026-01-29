@@ -11,7 +11,7 @@ var upCmd = &cobra.Command{
 	Long: `Start Docker Compose services.
 
 Auto-discovers compose.yaml and slice files (compose.*.yaml) in the current directory.
-Use -p to select a profile from do.yaml, or -d for detached mode.`,
+Use -p to select a profile from dox.yaml, or -d for detached mode.`,
 	Args: cobra.ArbitraryArgs,
 	RunE: func(cmd *cobra.Command, args []string) error {
 	 return executeCommand(func(b *Builder, a []string) ([]string, error) {

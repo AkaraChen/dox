@@ -66,7 +66,7 @@ func TestGetConfig(t *testing.T) {
 
 	cfg, err := getConfig()
 	assert.NoError(t, err)
-	// simple fixture has no do.yaml
+	// simple fixture has no dox.yaml
 	assert.Nil(t, cfg)
 }
 
@@ -288,7 +288,7 @@ func TestExecuteHooks_NilConfig(t *testing.T) {
 	err := os.Chdir(fixtureDir)
 	require.NoError(t, err)
 
-	// simple has no do.yaml
+	// simple has no dox.yaml
 	err = executeHooks("pre_up")
 	assert.NoError(t, err)
 }

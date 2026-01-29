@@ -10,7 +10,7 @@ import (
 	"gopkg.in/yaml.v3"
 )
 
-// GlobalConfig represents the user's global do configuration
+// GlobalConfig represents the user's global dox configuration
 type GlobalConfig struct {
 	Projects map[string]ProjectEntry `yaml:"projects,omitempty"`
 	Aliases  map[string]string       `yaml:"aliases,omitempty"`
@@ -28,7 +28,7 @@ func GetGlobalConfigPath() string {
 	if err != nil {
 		homeDir = os.Getenv("HOME")
 	}
-	return filepath.Join(homeDir, ".config", "do", "config.yaml")
+	return filepath.Join(homeDir, ".config", "dox", "config.yaml")
 }
 
 // LoadGlobalConfig loads the global configuration from the specified path.

@@ -15,7 +15,7 @@ type Discovery struct {
 	Files    []string          // ordered list of all files
 }
 
-// Config is the main do.yaml configuration
+// Config is the main dox.yaml configuration
 type Config struct {
 	Version    int                    `yaml:"version"`
 	Discovery  DiscoveryConfig        `yaml:"discovery"`

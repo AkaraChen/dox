@@ -10,7 +10,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-// TestListAliases_NoConfig tests listing aliases with no do.yaml
+// TestListAliases_NoConfig tests listing aliases with no dox.yaml
 func TestListAliases_NoConfig(t *testing.T) {
 	tempDir := t.TempDir()
 	originalDir, _ := os.Getwd()
@@ -39,7 +39,7 @@ func TestListAliases_NoConfig(t *testing.T) {
 	assert.Contains(t, output.String(), "No aliases defined")
 }
 
-// TestListAliases_WithAliases tests listing aliases with do.yaml
+// TestListAliases_WithAliases tests listing aliases with dox.yaml
 func TestListAliases_WithAliases(t *testing.T) {
 	fixtureDir := filepath.Join("..", "test", "fixtures", "with-aliases")
 	originalDir, _ := os.Getwd()
@@ -129,7 +129,7 @@ func TestExecuteAlias_NotFound(t *testing.T) {
 	assert.Contains(t, err.Error(), "not found")
 }
 
-// TestExecuteAlias_NoConfig tests executing an alias with no do.yaml
+// TestExecuteAlias_NoConfig tests executing an alias with no dox.yaml
 func TestExecuteAlias_NoConfig(t *testing.T) {
 	tempDir := t.TempDir()
 	originalDir, _ := os.Getwd()
@@ -140,7 +140,7 @@ func TestExecuteAlias_NoConfig(t *testing.T) {
 
 	err = executeAlias("any")
 	assert.Error(t, err)
-	assert.Contains(t, err.Error(), "no do.yaml found")
+	assert.Contains(t, err.Error(), "no dox.yaml found")
 }
 
 // TestExecuteAlias_SimpleAlias tests executing a simple alias

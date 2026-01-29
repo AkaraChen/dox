@@ -109,7 +109,7 @@ func TestGetGlobalConfigPath(t *testing.T) {
 
 	os.Setenv("HOME", "/test/home")
 	path := GetGlobalConfigPath()
-	expected := filepath.Join("/test/home", ".config", "do", "config.yaml")
+	expected := filepath.Join("/test/home", ".config", "dox", "config.yaml")
 	assert.Equal(t, expected, path)
 }
 

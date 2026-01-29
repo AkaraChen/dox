@@ -6,8 +6,8 @@ import (
 	"path/filepath"
 	"strings"
 
-	composepkg "github.com/akrc/do/internal/compose"
-	"github.com/akrc/do/internal/config"
+	composepkg "github.com/akrc/dox/internal/compose"
+	"github.com/akrc/dox/internal/config"
 	"github.com/spf13/cobra"
 )
 
@@ -33,7 +33,7 @@ func init() {
 	rootCmd.AddCommand(composeGroupCmd)
 
 	// Global flags for compose commands
-	composeGroupCmd.PersistentFlags().StringVarP(&profile, "profile", "p", "", "profile to use from do.yaml")
+	composeGroupCmd.PersistentFlags().StringVarP(&profile, "profile", "p", "", "profile to use from dox.yaml")
 }
 
 // getComposeBuilder creates a builder for the current directory

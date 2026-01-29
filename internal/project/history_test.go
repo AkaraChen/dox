@@ -172,7 +172,7 @@ func TestHistory_GetHistoryPath(t *testing.T) {
 
 	os.Setenv("HOME", "/test/home")
 	path := GetHistoryPath()
-	expected := filepath.Join("/test/home", ".cache", "do", "history.yaml")
+	expected := filepath.Join("/test/home", ".cache", "dox", "history.yaml")
 	assert.Equal(t, expected, path)
 }
 
@@ -278,7 +278,7 @@ func TestHistory_Save_ErrorOnDirectoryCreation(t *testing.T) {
 
 	// Try to save to a path we can't create (like /root/.cache on most systems)
 	// This should fail gracefully
-	err := hist.Save("/root/.cache/do/history.yaml")
+	err := hist.Save("/root/.cache/dox/history.yaml")
 	// We expect this to fail in most environments
 	// The test just verifies the error handling path exists
 	if err != nil {

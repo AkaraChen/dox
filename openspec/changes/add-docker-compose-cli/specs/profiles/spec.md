@@ -3,24 +3,24 @@
 ## ADDED Requirements
 
 ### Requirement: Profile Definition
-The system SHALL allow defining profiles in do.yaml that group compose file slices.
+The system SHALL allow defining profiles in dox.yaml that group compose file slices.
 
 #### Scenario: Define single-slice profile
-- **WHEN** do.yaml contains `profiles.dev.slices: [dev]`
+- **WHEN** dox.yaml contains `profiles.dev.slices: [dev]`
 - **THEN** profile 'dev' consists of base file + compose.dev.yaml
 
 #### Scenario: Define multi-slice profile
-- **WHEN** do.yaml contains `profiles.fullstack.slices: [dev, db, redis]`
+- **WHEN** dox.yaml contains `profiles.fullstack.slices: [dev, db, redis]`
 - **THEN** profile 'fullstack' includes base + all three slice files
 - **AND** order slices: base, db, dev, redis (alphabetical after base)
 
 #### Scenario: Define profile with env file
-- **WHEN** do.yaml contains `profiles.dev.env_file: .env.dev`
+- **WHEN** dox.yaml contains `profiles.dev.env_file: .env.dev`
 - **THEN** profile 'dev' loads environment from .env.dev
 - **AND** pass `--env-file .env.dev` to docker compose
 
 #### Scenario: Define profile with env reference
-- **WHEN** do.yaml contains `profiles.dev.env: dev`
+- **WHEN** dox.yaml contains `profiles.dev.env: dev`
 - **AND** global `env_files.dev: .env.dev` is defined
 - **THEN** resolve env file from global mapping
 - **AND** use .env.dev for the profile
@@ -30,19 +30,19 @@ The system SHALL allow selecting profiles via CLI flags.
 
 #### Scenario: Select profile with -p flag
 - **WHEN** user runs `do c up -p dev`
-- **THEN** use profile 'dev' from do.yaml
+- **THEN** use profile 'dev' from dox.yaml
 - **AND** build command with base + dev slice files
 
 #### Scenario: Select profile with --profile flag
 - **WHEN** user runs `do c up --profile prod`
-- **THEN** use profile 'prod' from do.yaml
+- **THEN** use profile 'prod' from dox.yaml
 - **AND** build command with base + prod slice files
 
 #### Scenario: Profile not found
 - **WHEN** user runs `do c up -p nonexistent`
 - **AND** profile 'nonexistent' is not defined
 - **THEN** display error: "Profile 'nonexistent' not found"
-- **AND** list available profiles from do.yaml
+- **AND** list available profiles from dox.yaml
 - **AND** exit with non-zero status
 
 ### Requirement: Profile Resolution
@@ -69,13 +69,13 @@ The system SHALL resolve profiles into compose file lists and env files.
 The system SHALL support a default profile activated when no profile is specified.
 
 #### Scenario: Use default profile
-- **WHEN** do.yaml defines `defaults.profile: dev`
+- **WHEN** dox.yaml defines `defaults.profile: dev`
 - **AND** user runs `do c up` without -p flag
 - **THEN** automatically use profile 'dev'
 - **AND** display message: "Using default profile: dev"
 
 #### Scenario: No default profile configured
-- **WHEN** do.yaml has no defaults.profile
+- **WHEN** dox.yaml has no defaults.profile
 - **AND** user runs `do c up` without -p flag
 - **THEN** use base file only (compose.yaml)
 - **AND** display info: "No profile specified, using base compose file only"
@@ -89,9 +89,9 @@ The system SHALL support a default profile activated when no profile is specifie
 The system SHALL support automatic profile selection based on git branch.
 
 #### Scenario: Auto-detect from git branch
-- **WHEN** do.yaml defines `defaults.auto_detect: true`
+- **WHEN** dox.yaml defines `defaults.auto_detect: true`
 - **AND** current git branch is 'feature/xyz'
-- **AND** profile 'feature' exists in do.yaml
+- **AND** profile 'feature' exists in dox.yaml
 - **THEN** auto-select profile 'feature'
 - **AND** display message: "Auto-detected profile 'feature' from branch 'feature/xyz'"
 
@@ -119,14 +119,14 @@ The system SHALL allow listing available profiles.
 
 #### Scenario: List profiles command
 - **WHEN** user runs `do c profile list` or `do c profiles`
-- **THEN** display all profiles defined in do.yaml
+- **THEN** display all profiles defined in dox.yaml
 - **AND** show slices included in each profile
 - **AND** mark default profile with asterisk or (default)
 - **AND** show env file if defined
 
 #### Scenario: List profiles when none defined
 - **WHEN** user runs `do c profiles`
-- **AND** do.yaml has no profiles section
+- **AND** dox.yaml has no profiles section
 - **THEN** display "No profiles defined"
 - **AND** show available slices from auto-discovery
 
@@ -139,7 +139,7 @@ The system SHALL allow listing available profiles.
 The system SHALL support profile inheritance for shared configuration.
 
 #### Scenario: Profile extends another
-- **WHEN** do.yaml defines `profiles.api.extends: base`
+- **WHEN** dox.yaml defines `profiles.api.extends: base`
 - **AND** profile 'base' defines slices: [db]
 - **THEN** profile 'api' includes slices from 'base' plus its own
 - **AND** resolve to: base file + db slice + api-specific slices
@@ -180,7 +180,7 @@ The system SHALL support variable substitution in profile definitions.
 The system SHALL validate profile configuration before execution.
 
 #### Scenario: Validate on load
-- **WHEN** do.yaml is loaded
+- **WHEN** dox.yaml is loaded
 - **THEN** validate all profile definitions
 - **AND** check slice references exist
 - **AND** check env files exist (warning if missing)

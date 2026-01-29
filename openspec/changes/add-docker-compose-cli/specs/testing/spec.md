@@ -34,7 +34,7 @@ The system SHALL provide a comprehensive set of test fixtures for E2E testing.
 
 #### Scenario: Profile-based fixture
 - **GIVEN** fixture directory `fixtures/with-profiles/`
-- **AND** contains `do.yaml` with profiles: dev (slices: [dev]), prod (slices: [prod])
+- **AND** contains `dox.yaml` with profiles: dev (slices: [dev]), prod (slices: [prod])
 - **WHEN** test runs `do c up -p dev --dry-run`
 - **THEN** output includes `compose.yaml` and `compose.dev.yaml`
 - **AND** when running `do c up -p prod --dry-run`, includes `compose.prod.yaml`
@@ -42,19 +42,19 @@ The system SHALL provide a comprehensive set of test fixtures for E2E testing.
 #### Scenario: Env file fixture
 - **GIVEN** fixture directory `fixtures/with-env/`
 - **AND** contains `.env.dev`, `.env.prod`
-- **AND** `do.yaml` defines profiles with env_file mapping
+- **AND** `dox.yaml` defines profiles with env_file mapping
 - **WHEN** test runs `do c up -p dev --dry-run`
 - **THEN** output includes `--env-file .env.dev`
 
 #### Scenario: Aliases fixture
 - **GIVEN** fixture directory `fixtures/with-aliases/`
-- **AND** `do.yaml` defines `aliases.fresh: "down -v && up --build -d"`
+- **AND** `dox.yaml` defines `aliases.fresh: "down -v && up --build -d"`
 - **WHEN** test runs `do c fresh --dry-run`
 - **THEN** output shows two commands: `docker compose ... down -v` and `docker compose ... up --build -d`
 
 #### Scenario: Hooks fixture
 - **GIVEN** fixture directory `fixtures/with-hooks/`
-- **AND** `do.yaml` defines pre_up and post_up hooks
+- **AND** `dox.yaml` defines pre_up and post_up hooks
 - **WHEN** test runs `do c up --dry-run`
 - **THEN** output includes hook commands before and after docker compose command
 
@@ -119,7 +119,7 @@ The system SHALL verify all assembled commands via dry-run testing.
   - `docker compose -f ... up --build`
 
 #### Scenario: Profile with env file dry-run
-- **GIVEN** fixture with do.yaml profile defining env_file: .env.dev
+- **GIVEN** fixture with dox.yaml profile defining env_file: .env.dev
 - **WHEN** running `do c up -p dev --dry-run`
 - **THEN** output includes: `docker compose -f ... -f compose.dev.yaml --env-file .env.dev up`
 
@@ -148,7 +148,7 @@ The system SHALL use table-driven tests for command variants.
 - **WHEN** defining error cases
 - **THEN** use table-driven approach for:
   - No compose files found
-  - Invalid do.yaml syntax
+  - Invalid dox.yaml syntax
   - Missing profile reference
   - Missing slice file
   - Docker compose not found
@@ -157,32 +157,32 @@ The system SHALL use table-driven tests for command variants.
 ### Requirement: Unit Tests for Config Parsing
 The system SHALL have comprehensive unit tests for configuration parsing.
 
-#### Scenario: Parse valid do.yaml
-- **GIVEN** a valid do.yaml with profiles, aliases, hooks
+#### Scenario: Parse valid dox.yaml
+- **GIVEN** a valid dox.yaml with profiles, aliases, hooks
 - **WHEN** parsing the config
 - **THEN** return struct with all fields populated
 - **AND** no errors
 
 #### Scenario: Parse invalid yaml
-- **GIVEN** a do.yaml with invalid YAML syntax
+- **GIVEN** a dox.yaml with invalid YAML syntax
 - **WHEN** parsing the config
 - **THEN** return error with line number
 - **AND** error message describes the issue
 
 #### Scenario: Parse empty config
-- **GIVEN** a do.yaml with only `version: 1`
+- **GIVEN** a dox.yaml with only `version: 1`
 - **WHEN** parsing the config
 - **THEN** return default config struct
 - **AND** no errors
 
 #### Scenario: Parse profile inheritance
-- **GIVEN** a do.yaml with profile extending another
+- **GIVEN** a dox.yaml with profile extending another
 - **WHEN** parsing and resolving profiles
 - **THEN** merged profile includes base and extended slices
 - **AND** no duplicate slices
 
 #### Scenario: Parse with variable substitution
-- **GIVEN** a do.yaml with ${VAR} references
+- **GIVEN** a dox.yaml with ${VAR} references
 - **AND** environment variables set
 - **WHEN** parsing the config
 - **THEN** variables are substituted with actual values
@@ -245,7 +245,7 @@ The system SHALL include benchmark tests for performance-critical code.
 - **AND** target: < 1ms per command build
 
 #### Scenario: Benchmark config parsing
-- **GIVEN** a function that parses do.yaml
+- **GIVEN** a function that parses dox.yaml
 - **WHEN** running benchmarks
 - **THEN** benchmark reports time for various config sizes
 - **AND** target: < 10ms for typical config

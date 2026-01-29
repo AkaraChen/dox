@@ -21,7 +21,7 @@ profiles:
     slices: [prod]
 `
 	tmpDir := t.TempDir()
-	configPath := filepath.Join(tmpDir, "do.yaml")
+	configPath := filepath.Join(tmpDir, "dox.yaml")
 	err := os.WriteFile(configPath, []byte(content), 0644)
 	require.NoError(t, err)
 
@@ -42,7 +42,7 @@ version: 1
     badly: indented
 `
 	tmpDir := t.TempDir()
-	configPath := filepath.Join(tmpDir, "do.yaml")
+	configPath := filepath.Join(tmpDir, "dox.yaml")
 	err := os.WriteFile(configPath, []byte(content), 0644)
 	require.NoError(t, err)
 
@@ -53,7 +53,7 @@ version: 1
 func TestLoadConfig_MinimalConfig(t *testing.T) {
 	content := `version: 1`
 	tmpDir := t.TempDir()
-	configPath := filepath.Join(tmpDir, "do.yaml")
+	configPath := filepath.Join(tmpDir, "dox.yaml")
 	err := os.WriteFile(configPath, []byte(content), 0644)
 	require.NoError(t, err)
 
@@ -73,7 +73,7 @@ aliases:
   restart-all: "down && up -d"
 `
 	tmpDir := t.TempDir()
-	configPath := filepath.Join(tmpDir, "do.yaml")
+	configPath := filepath.Join(tmpDir, "dox.yaml")
 	err := os.WriteFile(configPath, []byte(content), 0644)
 	require.NoError(t, err)
 
@@ -96,7 +96,7 @@ hooks:
     - echo "Ready!"
 `
 	tmpDir := t.TempDir()
-	configPath := filepath.Join(tmpDir, "do.yaml")
+	configPath := filepath.Join(tmpDir, "dox.yaml")
 	err := os.WriteFile(configPath, []byte(content), 0644)
 	require.NoError(t, err)
 
@@ -124,7 +124,7 @@ profiles:
     env: prod
 `
 	tmpDir := t.TempDir()
-	configPath := filepath.Join(tmpDir, "do.yaml")
+	configPath := filepath.Join(tmpDir, "dox.yaml")
 	err := os.WriteFile(configPath, []byte(content), 0644)
 	require.NoError(t, err)
 
@@ -145,7 +145,7 @@ discovery:
   base: "docker-compose.yml"
 `
 	tmpDir := t.TempDir()
-	configPath := filepath.Join(tmpDir, "do.yaml")
+	configPath := filepath.Join(tmpDir, "dox.yaml")
 	err := os.WriteFile(configPath, []byte(content), 0644)
 	require.NoError(t, err)
 
@@ -167,7 +167,7 @@ func TestLoadConfig_FileNotFound(t *testing.T) {
 
 func TestFindConfigFile(t *testing.T) {
 	tmpDir := t.TempDir()
-	configPath := filepath.Join(tmpDir, "do.yaml")
+	configPath := filepath.Join(tmpDir, "dox.yaml")
 	os.WriteFile(configPath, []byte("version: 1"), 0644)
 
 	found, err := FindConfigFile(tmpDir)

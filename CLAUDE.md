@@ -27,7 +27,7 @@ You are a manager and an agent orchestrator. You must never perform implementati
 
 ### Building
 ```bash
-make build          # Build binary for current platform to build/do
+make build          # Build binary for current platform to build/dox
 make build-all      # Build for darwin/amd64/arm64, linux/amd64, windows/amd64
 make install        # Install to $GOPATH/bin
 ```
@@ -78,7 +78,7 @@ pkg/ (Reusable components)
 ### Key Data Flow
 
 ```
-User Input (do c up -d)
+User Input (dox c up -d)
   ↓
 cmd/root.go (global flags)
   ↓
@@ -94,7 +94,7 @@ internal/compose/executor.go (RunCommand → docker compose)
 ### Configuration Discovery Priority
 
 1. Explicit `-f` flags (highest priority)
-2. `do.yaml` profile configuration
+2. `dox.yaml` profile configuration
 3. Auto-discovery: `compose.yaml` + `compose.*.yaml` (alphabetical)
 
 ### Core Components
@@ -138,6 +138,6 @@ Located in `test/fixtures/` with 16+ scenarios:
 
 - `openspec/project.md` - Tech stack, conventions, constraints
 - `openspec/AGENTS.md` - Spec-driven development workflow
-- `do.yaml` (project-local) - Profiles, slices, aliases, hooks
-- `~/.config/do/config.yaml` - Global project aliases
-- `~/.cache/do/history.yaml` - Command execution history
+- `dox.yaml` (project-local) - Profiles, slices, aliases, hooks
+- `~/.config/dox/config.yaml` - Global project aliases
+- `~/.cache/dox/history.yaml` - Command execution history

@@ -5,17 +5,17 @@ import (
 	"os"
 	"sort"
 
-	composepkg "github.com/akrc/do/internal/compose"
+	composepkg "github.com/akrc/dox/internal/compose"
 	"github.com/spf13/cobra"
 )
 
 // aliasCmd represents the alias command
 var aliasCmd = &cobra.Command{
 	Use:   "alias [NAME]",
-	Short: "Run a custom alias defined in do.yaml",
-	Long: `Run a custom alias defined in do.yaml.
+	Short: "Run a custom alias defined in dox.yaml",
+	Long: `Run a custom alias defined in dox.yaml.
 
-Aliases are custom command shortcuts defined in your do.yaml file.
+Aliases are custom command shortcuts defined in your dox.yaml file.
 They can chain multiple docker compose commands together.
 
 With no arguments, lists all available aliases.`,
@@ -40,7 +40,7 @@ func listAliases() error {
 	}
 
 	if cfg == nil || len(cfg.Aliases) == 0 {
-		fmt.Println("No aliases defined in do.yaml")
+		fmt.Println("No aliases defined in dox.yaml")
 		return nil
 	}
 
@@ -67,7 +67,7 @@ func executeAlias(aliasName string) error {
 	}
 
 	if cfg == nil {
-		return fmt.Errorf("no do.yaml found")
+		return fmt.Errorf("no dox.yaml found")
 	}
 
 	aliasDef, exists := cfg.Aliases[aliasName]

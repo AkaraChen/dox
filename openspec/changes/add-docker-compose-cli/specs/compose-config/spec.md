@@ -44,68 +44,68 @@ The system SHALL order discovered compose files correctly for Docker Compose.
 - **THEN** order slices alphabetically: db, dev, redis
 - **AND** build command: `-f compose.yaml -f compose.db.yaml -f compose.dev.yaml -f compose.redis.yaml`
 
-### Requirement: do.yaml Configuration File
-The system SHALL support a project-local `do.yaml` configuration file.
+### Requirement: dox.yaml Configuration File
+The system SHALL support a project-local `dox.yaml` configuration file.
 
 #### Scenario: Parse minimal config
-- **WHEN** `do.yaml` contains only `version: 1`
+- **WHEN** `dox.yaml` contains only `version: 1`
 - **THEN** parse successfully
 - **AND** use default behavior for all settings
 
 #### Scenario: Parse profiles config
-- **WHEN** `do.yaml` contains profiles section with dev and prod
+- **WHEN** `dox.yaml` contains profiles section with dev and prod
 - **THEN** parse profiles into memory
 - **AND** make available for profile resolution
 
 #### Scenario: Parse aliases config
-- **WHEN** `do.yaml` contains aliases section
+- **WHEN** `dox.yaml` contains aliases section
 - **THEN** parse aliases into memory
 - **AND** map alias names to command templates
 
 #### Scenario: Parse hooks config
-- **WHEN** `do.yaml` contains hooks section with pre_up and post_up
+- **WHEN** `dox.yaml` contains hooks section with pre_up and post_up
 - **THEN** parse hooks into memory
 - **AND** associate hooks with appropriate lifecycle events
 
 #### Scenario: Invalid YAML syntax
-- **WHEN** `do.yaml` contains invalid YAML syntax
+- **WHEN** `dox.yaml` contains invalid YAML syntax
 - **THEN** display helpful error message with line number
 - **AND** fall back to default behavior
 - **AND** exit with non-zero status if critical config is invalid
 
 ### Requirement: Discovery Configuration
-The system SHALL allow configuration of auto-discovery behavior via do.yaml.
+The system SHALL allow configuration of auto-discovery behavior via dox.yaml.
 
 #### Scenario: Custom pattern
-- **WHEN** do.yaml specifies `discovery.pattern: "docker-compose.*.yml"`
+- **WHEN** dox.yaml specifies `discovery.pattern: "docker-compose.*.yml"`
 - **THEN** use custom pattern for file discovery
 - **AND** match files against custom pattern
 
 #### Scenario: Custom base file
-- **WHEN** do.yaml specifies `discovery.base: "docker-compose.yml"`
+- **WHEN** dox.yaml specifies `discovery.base: "docker-compose.yml"`
 - **THEN** use custom base file
 - **AND** treat specified file as base (not as slice)
 
 #### Scenario: Disable auto-discovery
-- **WHEN** do.yaml specifies `discovery.enabled: false`
+- **WHEN** dox.yaml specifies `discovery.enabled: false`
 - **THEN** skip auto-discovery
 - **AND** require explicit file specification or profile
 
 ### Requirement: Default Behavior Configuration
-The system SHALL support default behavior settings in do.yaml.
+The system SHALL support default behavior settings in dox.yaml.
 
 #### Scenario: Default profile
-- **WHEN** do.yaml specifies `defaults.profile: dev`
+- **WHEN** dox.yaml specifies `defaults.profile: dev`
 - **AND** user runs `do c up` without `-p` flag
 - **THEN** use dev profile automatically
 
 #### Scenario: Default slice
-- **WHEN** do.yaml specifies `defaults.slice: dev`
+- **WHEN** dox.yaml specifies `defaults.slice: dev`
 - **AND** no profile is specified
 - **THEN** use base file + dev slice
 
 #### Scenario: No default configured
-- **WHEN** do.yaml has no defaults section
+- **WHEN** dox.yaml has no defaults section
 - **AND** user runs `do c up` without specifying profile/slice
 - **THEN** use only base file (compose.yaml)
 - **AND** warn user that no profile is active
@@ -120,7 +120,7 @@ The system SHALL support environment file configuration per profile.
 - **AND** load environment variables from specified file
 
 #### Scenario: Global env_files mapping
-- **WHEN** do.yaml contains `env_files.dev: .env.dev` and `env_files.prod: .env.prod`
+- **WHEN** dox.yaml contains `env_files.dev: .env.dev` and `env_files.prod: .env.prod`
 - **AND** profile references env: dev
 - **THEN** resolve env file from global mapping
 - **AND** pass to docker compose command
@@ -131,10 +131,10 @@ The system SHALL support environment file configuration per profile.
 - **AND** continue execution (docker compose will handle missing file)
 
 ### Requirement: Aliases Configuration
-The system SHALL support custom command aliases in do.yaml.
+The system SHALL support custom command aliases in dox.yaml.
 
 #### Scenario: Simple alias
-- **WHEN** do.yaml defines `aliases.fresh: "down -v && up --build -d"`
+- **WHEN** dox.yaml defines `aliases.fresh: "down -v && up --build -d"`
 - **AND** user runs `do c fresh`
 - **THEN** execute down with volumes
 - **AND** then execute up with build and detach flags
@@ -153,7 +153,7 @@ The system SHALL support custom command aliases in do.yaml.
 The system SHALL support lifecycle hooks for command execution.
 
 #### Scenario: Pre-up hook
-- **WHEN** do.yaml defines `hooks.pre_up: ["echo 'Starting...'"]`
+- **WHEN** dox.yaml defines `hooks.pre_up: ["echo 'Starting...'"]`
 - **AND** user runs `do c up`
 - **THEN** execute pre_up hook before docker compose command
 - **AND** display hook output
@@ -161,14 +161,14 @@ The system SHALL support lifecycle hooks for command execution.
 - **AND** abort if hook fails (non-zero exit)
 
 #### Scenario: Post-up hook
-- **WHEN** do.yaml defines `hooks.post_up: ["echo 'Ready!'"]`
+- **WHEN** dox.yaml defines `hooks.post_up: ["echo 'Ready!'"]`
 - **AND** user runs `do c up`
 - **THEN** execute docker compose up command
 - **AND** after completion, execute post_up hook
 - **AND** display hook output
 
 #### Scenario: Multiple hooks
-- **WHEN** do.yaml defines multiple pre_up hooks
+- **WHEN** dox.yaml defines multiple pre_up hooks
 - **THEN** execute hooks in order defined
 - **AND** stop on first failure
 - **AND** report which hook failed
@@ -179,15 +179,15 @@ The system SHALL support lifecycle hooks for command execution.
 - **AND** apply same profile/slice context
 
 ### Requirement: User Config Directory
-The system SHALL support global configuration in `~/.config/do/config.yaml`.
+The system SHALL support global configuration in `~/.config/dox/config.yaml`.
 
 #### Scenario: User config for project aliases
-- **WHEN** `~/.config/do/config.yaml` contains projects section
+- **WHEN** `~/.config/dox/config.yaml` contains projects section
 - **THEN** parse global config on startup
-- **AND** merge with project-local do.yaml (project takes precedence)
+- **AND** merge with project-local dox.yaml (project takes precedence)
 
 #### Scenario: Missing user config directory
-- **WHEN** `~/.config/do/` does not exist
+- **WHEN** `~/.config/dox/` does not exist
 - **THEN** create directory structure
 - **AND** use default configuration
 
@@ -200,7 +200,7 @@ The system SHALL support global configuration in `~/.config/do/config.yaml`.
 The system SHALL validate configuration files and report errors clearly.
 
 #### Scenario: Invalid profile reference
-- **WHEN** do.yaml references non-existent profile in defaults
+- **WHEN** dox.yaml references non-existent profile in defaults
 - **THEN** display error: "Profile 'xyz' not found in configuration"
 - **AND** list available profiles
 - **AND** exit with non-zero status
@@ -212,6 +212,6 @@ The system SHALL validate configuration files and report errors clearly.
 - **AND** exit with non-zero status
 
 #### Scenario: Unknown config keys
-- **WHEN** do.yaml contains keys not recognized by schema
+- **WHEN** dox.yaml contains keys not recognized by schema
 - **THEN** display warning: "Unknown configuration key: 'xyz'"
 - **AND** continue with valid configuration

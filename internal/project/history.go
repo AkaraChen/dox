@@ -28,7 +28,7 @@ func GetHistoryPath() string {
 	if err != nil {
 		homeDir = os.Getenv("HOME")
 	}
-	return filepath.Join(homeDir, ".cache", "do", "history.yaml")
+	return filepath.Join(homeDir, ".cache", "dox", "history.yaml")
 }
 
 // LoadHistory loads the command history from the specified path.

@@ -8,7 +8,7 @@ Docker Compose projects often span multiple files for different environments (de
 
 **Goals:**
 - Reduce typing for common docker compose operations
-- Provide project-local configuration (do.yaml)
+- Provide project-local configuration (dox.yaml)
 - Support profile-based compose file combinations
 - Enable dry-run preview of commands
 - Work with existing Docker Compose installations (no replacement)
@@ -30,14 +30,14 @@ Docker Compose projects often span multiple files for different environments (de
   - Docker Compose plugin (limited by compose's extension API)
 
 ### Configuration Format: YAML
-- **What**: Project-local `do.yaml` for profiles, slices, aliases
+- **What**: Project-local `dox.yaml` for profiles, slices, aliases
 - **Why**: Familiar to Docker users, easy to parse, human-editable
 - **Alternatives considered**: TOML (less common in Docker ecosystem), JSON (not human-friendly)
 
 ### Auto-Discovery Strategy
 - **What**: Scan current directory for `compose.yaml` + `compose.*.yaml` patterns
 - **Why**: Convention over configuration - zero config for simple cases
-- **Fallback**: Explicit file list in do.yaml when auto-detection insufficient
+- **Fallback**: Explicit file list in dox.yaml when auto-detection insufficient
 
 ### Command Structure: `do c <subcommand>`
 - **What**: `c` as shorthand for compose, followed by familiar docker compose verbs
@@ -54,7 +54,7 @@ Docker Compose projects often span multiple files for different environments (de
                               │
 ┌─────────────────────────────────────────────────────────────┐
 │                      Config Layer                            │
-│  do.yaml parser + Auto-discovery + Profile resolver         │
+│  dox.yaml parser + Auto-discovery + Profile resolver         │
 └─────────────────────────────────────────────────────────────┘
                               │
 ┌─────────────────────────────────────────────────────────────┐
@@ -77,7 +77,7 @@ do/
 │   └── compose.go       # Compose command group
 ├── internal/
 │   ├── config/
-│   │   ├── parser.go    # do.yaml parsing
+│   │   ├── parser.go    # dox.yaml parsing
 │   │   ├── discovery.go # Auto-discover compose files
 │   │   └── profile.go   # Profile resolution
 │   ├── compose/
@@ -96,7 +96,7 @@ do/
 |------|------------|
 | Docker Compose version compatibility | Validate compose binary, feature detection |
 | Shell injection from user input | Use safe exec API, validate all inputs |
-| Config file conflicts | Clear precedence: CLI flags > do.yaml > auto-discovery |
+| Config file conflicts | Clear precedence: CLI flags > dox.yaml > auto-discovery |
 | Breaking changes in Docker Compose | Pin minimum version, update on major releases |
 | Complex config scenarios | Always allow explicit `-f` override |
 
@@ -108,7 +108,7 @@ do/
 - Single profile (default)
 
 ### Phase 2: Profiles & Config
-- do.yaml support
+- dox.yaml support
 - Profile system
 - Environment files
 
@@ -133,4 +133,4 @@ do/
    - **Decision**: Support both, prefer `.yaml` (Docker convention)
 
 4. How to handle project config vs user config?
-   - **Decision**: Project-local `do.yaml` takes precedence, `~/.config/do/config.yaml` for global aliases
+   - **Decision**: Project-local `dox.yaml` takes precedence, `~/.config/dox/config.yaml` for global aliases

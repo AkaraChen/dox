@@ -2,7 +2,7 @@
 
 ## Purpose
 
-A CLI wrapper tool for Docker Compose that simplifies multi-file compose setups. The `do` command eliminates the need for repetitive `-f` flags when working with compose file slices for different environments (dev, prod, db, etc.).
+A CLI wrapper tool for Docker Compose that simplifies multi-file compose setups. The `dox` command eliminates the need for repetitive `-f` flags when working with compose file slices for different environments (dev, prod, db, etc.).
 
 ## Tech Stack
 
@@ -26,7 +26,7 @@ A CLI wrapper tool for Docker Compose that simplifies multi-file compose setups.
 
 - Clean architecture: cmd (CLI layer), internal (business logic), pkg (reusable)
 - Dependency injection via interfaces where beneficial
-- Configuration-driven behavior (do.yaml)
+- Configuration-driven behavior (dox.yaml)
 - Explicit is better than implicit (fallbacks with clear messages)
 
 ### Testing Strategy
@@ -63,4 +63,4 @@ The `do` tool auto-discovers these files and builds the appropriate docker compo
 
 - **Docker Compose V2**: must be installed and in PATH
 - **Git**: optional, for auto-detect feature
-- **YAML files**: project-local do.yaml, compose.*.yaml files
+- **YAML files**: project-local dox.yaml, compose.*.yaml files

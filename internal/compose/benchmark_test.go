@@ -4,7 +4,7 @@ import (
 	"path/filepath"
 	"testing"
 
-	configpkg "github.com/akrc/do/internal/config"
+	configpkg "github.com/akrc/dox/internal/config"
 )
 
 func BenchmarkBuildCommand_SimpleUp(b *testing.B) {

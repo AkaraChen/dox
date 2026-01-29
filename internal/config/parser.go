@@ -8,7 +8,7 @@ import (
 	"gopkg.in/yaml.v3"
 )
 
-// LoadConfig loads a do.yaml configuration file
+// LoadConfig loads a dox.yaml configuration file
 func LoadConfig(path string) (*Config, error) {
 	data, err := os.ReadFile(path)
 	if err != nil {
@@ -28,16 +28,16 @@ func LoadConfig(path string) (*Config, error) {
 	return &config, nil
 }
 
-// FindConfigFile looks for do.yaml in the specified directory
+// FindConfigFile looks for dox.yaml in the specified directory
 func FindConfigFile(dir string) (string, error) {
-	configPath := filepath.Join(dir, "do.yaml")
+	configPath := filepath.Join(dir, "dox.yaml")
 	if _, err := os.Stat(configPath); err == nil {
 	 return configPath, nil
 	}
-	return "", fmt.Errorf("no do.yaml found in %s", dir)
+	return "", fmt.Errorf("no dox.yaml found in %s", dir)
 }
 
-// LoadConfigFromDirectory loads do.yaml from directory if it exists
+// LoadConfigFromDirectory loads dox.yaml from directory if it exists
 func LoadConfigFromDirectory(dir string) (*Config, string, error) {
 	configPath, err := FindConfigFile(dir)
 	if err != nil {

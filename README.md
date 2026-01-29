@@ -1,12 +1,12 @@
-# do - Docker Compose CLI Wrapper
+# dox - Docker Compose CLI Wrapper
 
 A simplified CLI wrapper for Docker Compose that eliminates the verbosity of managing multi-file compose stacks.
 
-## Why do?
+## Why dox?
 
 Docker Compose projects often span multiple files (base, dev, prod, db, etc.). The native `docker compose -f file1.yaml -f file2.yaml -f file3.yaml ...` syntax becomes unwieldy with 3+ files.
 
-**do** simplifies this with:
+**dox** simplifies this with:
 - Auto-discovery of compose files
 - Profile-based configuration
 - Dry-run mode for command preview
@@ -16,11 +16,11 @@ Docker Compose projects often span multiple files (base, dev, prod, db, etc.). T
 
 ```bash
 # Build from source
-go install github.com/akrc/do@latest
+go install github.com/akrc/dox@latest
 
 # Or build locally
-git clone https://github.com/akrc/do.git
-cd do
+git clone https://github.com/akrc/dox.git
+cd dox
 make build
 ```
 
@@ -28,34 +28,34 @@ make build
 
 ```bash
 # Start services (auto-discovers compose.yaml and compose.*.yaml)
-do c up
+dox c up
 
 # Start in detached mode
-do c up -d
+dox c up -d
 
 # View service status
-do c ps
+dox c ps
 
 # View logs
-do c logs -f
+dox c logs -f
 
 # Stop services
-do c down
+dox c down
 ```
 
 ## Configuration
 
 ### Auto-Discovery (No Config Required)
 
-do automatically discovers compose files in your directory:
+dox automatically discovers compose files in your directory:
 - `compose.yaml` or `docker-compose.yaml`
 - `compose.*.yaml` files (e.g., `compose.dev.yaml`, `compose.prod.yaml`)
 
 Files are loaded in alphabetical order.
 
-### Using do.yaml
+### Using dox.yaml
 
-Create a `do.yaml` in your project directory for advanced configuration:
+Create a `dox.yaml` in your project directory for advanced configuration:
 
 ```yaml
 # Define profiles for different environments
@@ -105,64 +105,64 @@ hooks:
 
 ```bash
 # Start services
-do c up
-do c up -d                    # detached mode
-do c up --build              # rebuild images
+dox c up
+dox c up -d                    # detached mode
+dox c up --build              # rebuild images
 
 # Stop services
-do c down
-do c down -v                 # remove volumes
-do c down --remove-orphans   # remove orphaned containers
+dox c down
+dox c down -v                 # remove volumes
+dox c down --remove-orphans   # remove orphaned containers
 
 # View status
-do c ps
-do c status                  # enhanced status view
-do s                         # shorthand for status
+dox c ps
+dox c status                  # enhanced status view
+dox s                         # shorthand for status
 
 # View logs
-do c logs
-do c logs -f                 # follow logs
-do c logs --tail 100         # show last 100 lines
-do c logs api                # logs for specific service
+dox c logs
+dox c logs -f                 # follow logs
+dox c logs --tail 100         # show last 100 lines
+dox c logs api                # logs for specific service
 
 # Service management
-do c restart api             # restart specific service
-do c exec api bash           # execute command in container
-do c build api               # rebuild specific service
+dox c restart api             # restart specific service
+dox c exec api bash           # execute command in container
+dox c build api               # rebuild specific service
 ```
 
 ### Convenience Commands
 
 ```bash
 # dup: down then up
-do c dup
+dox c dup
 
 # nuke: complete cleanup (down -v --remove-orphans)
-do c nuke
+dox c nuke
 
 # fresh: clean rebuild (down -v && up --build -d)
-do c fresh
+dox c fresh
 ```
 
 ### Aliases
 
 ```bash
 # List all aliases
-do c alias
+dox c alias
 
 # Run an alias
-do c alias fresh
+dox c alias fresh
 ```
 
 ### Global Flags
 
 ```bash
 # Dry-run: preview commands without executing
-do --dry-run c up
+dox --dry-run c up
 
 # Verbose: show debug information
-do --verbose c up
-do -v c up
+dox --verbose c up
+dox -v c up
 ```
 
 ## Profile Management
@@ -171,15 +171,15 @@ Switch between different compose configurations:
 
 ```bash
 # Use a specific profile
-do --profile prod c up
+dox --profile prod c up
 
-# Override default profile from do.yaml
-do --profile full c up
+# Override default profile from dox.yaml
+dox --profile full c up
 ```
 
 ## Project Aliases
 
-Define project shortcuts in `~/.config/do/config.yaml`:
+Define project shortcuts in `~/.config/dox/config.yaml`:
 
 ```yaml
 projects:
@@ -205,27 +205,27 @@ Then use the `@project` syntax to run commands in any project:
 
 ```bash
 # Run commands in a different project
-do @webapp c up
-do @api logs -f
-do @microservices c status
+dox @webapp c up
+dox @api logs -f
+dox @microservices c status
 
-# Works with any do command
-do @webapp c nuke
-do @api c fresh
+# Works with any dox command
+dox @webapp c nuke
+dox @api c fresh
 ```
 
 ## File Discovery
 
-do discovers compose files using this precedence:
+dox discovers compose files using this precedence:
 
 1. **Explicit `-f` flags** (highest priority)
-2. **do.yaml profile configuration**
+2. **dox.yaml profile configuration**
 3. **Auto-discovery** in current directory
 
 ```bash
 # Override auto-discovery with explicit files
-do c up -f custom.yaml
-do c up -f base.yaml -f override.yaml
+dox c up -f custom.yaml
+dox c up -f base.yaml -f override.yaml
 ```
 
 ## Environment Variables
@@ -269,14 +269,14 @@ myproject/
   compose.dev.yaml
 
 # Just run
-do c up
+dox c up
 # Equivalent to: docker compose -f compose.yaml -f compose.dev.yaml up
 ```
 
 ### Complex Multi-Environment Setup
 
 ```bash
-# do.yaml
+# dox.yaml
 profiles:
   dev:
     slices: [base, dev, db]
@@ -291,34 +291,34 @@ profiles:
     env_file: .env.prod
 
 # Usage
-do --profile dev c up
-do --profile staging c up
-do --profile prod c up
+dox --profile dev c up
+dox --profile staging c up
+dox --profile prod c up
 ```
 
 ### Daily Workflow
 
 ```bash
 # Morning: start everything fresh
-do c fresh
+dox c fresh
 
 # During development: rebuild and restart
-do c dup
+dox c dup
 
 # Check status
-do c ps
+dox c ps
 
 # View logs
-do c logs -f
+dox c logs -f
 
 # End of day: clean shutdown
-do c down
+dox c down
 ```
 
 ### Multi-Project Management
 
 ```bash
-# ~/.config/do/config.yaml
+# ~/.config/dox/config.yaml
 projects:
   frontend:
     path: ~/projects/frontend
@@ -328,25 +328,25 @@ projects:
     path: ~/projects/database
 
 # Start all projects
-do @frontend c up -d
-do @backend c up -d
-do @db c up -d
+dox @frontend c up -d
+dox @backend c up -d
+dox @db c up -d
 
 # Check all statuses
-do @frontend c ps
-do @backend c ps
-do @db c ps
+dox @frontend c ps
+dox @backend c ps
+dox @db c ps
 ```
 
 ## File Locations
 
-- **Project config**: `./do.yaml` (in your project directory)
-- **Global config**: `~/.config/do/config.yaml`
-- **Command history**: `~/.cache/do/history.yaml`
+- **Project config**: `./dox.yaml` (in your project directory)
+- **Global config**: `~/.config/dox/config.yaml`
+- **Command history**: `~/.cache/dox/history.yaml`
 
 ## Test Coverage
 
-do follows TDD principles with comprehensive test coverage:
+dox follows TDD principles with comprehensive test coverage:
 
 - Config: 93.9%
 - Compose: 79.3%
