@@ -105,6 +105,6 @@ func executeAlias(aliasName string) error {
 		return nil
 	}
 
-	_, err = executor.RunCommands(commands)
+	err = executor.RunInteractiveMultiple(commands)
 	return err
 }

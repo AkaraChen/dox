@@ -114,7 +114,7 @@ func executeHooks(hookType string) error {
 
 		// Parse hook command
 		cmd := parseHookCommand(hook)
-		if _, err := executor.RunCommand(cmd); err != nil {
+		if err := executor.RunInteractive(cmd); err != nil {
 			return fmt.Errorf("hook failed: %s\nError: %w", hook, err)
 		}
 	}
@@ -179,7 +179,7 @@ func executeCommand(buildFunc func(*Builder, []string) ([]string, error), args [
 		return nil
 	}
 
-	_, err = executor.RunCommand(cmd)
+	err = executor.RunInteractive(cmd)
 	if err != nil {
 		return err
 	}
@@ -229,7 +229,7 @@ func executeCommands(buildFunc func(*Builder) ([][]string, error)) error {
 		return nil
 	}
 
-	_, err = executor.RunCommands(commands)
+	err = executor.RunInteractiveMultiple(commands)
 	return err
 }
 

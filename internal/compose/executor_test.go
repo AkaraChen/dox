@@ -149,3 +149,58 @@ func TestExecutor_RunCommand_SetsEnv(t *testing.T) {
 	require.NoError(t, err)
 	assert.Contains(t, output, "test_value")
 }
+
+func TestExecutor_RunInteractiveMultiple_Success(t *testing.T) {
+	executor := NewExecutor(false)
+	var stdout bytes.Buffer
+	executor.Stdout = &stdout
+	executor.Stderr = &stdout
+
+	commands := [][]string{
+		{"echo", "first"},
+		{"echo", "second"},
+	}
+
+	err := executor.RunInteractiveMultiple(commands)
+	require.NoError(t, err)
+	assert.Contains(t, stdout.String(), "first")
+	assert.Contains(t, stdout.String(), "second")
+}
+
+func TestExecutor_RunInteractiveMultiple_StopsOnError(t *testing.T) {
+	executor := NewExecutor(false)
+	var stdout bytes.Buffer
+	executor.Stdout = &stdout
+	executor.Stderr = &stdout
+
+	commands := [][]string{
+		{"echo", "first"},
+		{"false"},          // This will fail
+		{"echo", "third"},  // Should not be reached
+	}
+
+	err := executor.RunInteractiveMultiple(commands)
+	assert.Error(t, err)
+	assert.Contains(t, err.Error(), "command 2 failed")
+	assert.Contains(t, stdout.String(), "first")
+	assert.NotContains(t, stdout.String(), "third")
+}
+
+func TestExecutor_RunInteractiveMultiple_DryRun(t *testing.T) {
+	executor := NewExecutor(true)
+	var stdout bytes.Buffer
+	executor.Stdout = &stdout
+
+	commands := [][]string{
+		{"echo", "first"},
+		{"echo", "second"},
+	}
+
+	err := executor.RunInteractiveMultiple(commands)
+	require.NoError(t, err)
+
+	// Should show both commands in dry-run output
+	output := stdout.String()
+	assert.Contains(t, output, "echo first")
+	assert.Contains(t, output, "echo second")
+}

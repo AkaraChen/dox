@@ -118,13 +118,13 @@ func (e *Executor) RunCommands(commands [][]string) (string, error) {
 // RunInteractive executes a command with inherited stdio
 func (e *Executor) RunInteractive(cmd []string) error {
 	if e.DryRun {
-	 output := FormatCommand(cmd)
-	 fmt.Fprintf(e.Stdout, "%s\n", output)
-	 return nil
+		output := FormatCommand(cmd)
+		fmt.Fprintf(e.Stdout, "%s\n", output)
+		return nil
 	}
 
 	if len(cmd) == 0 {
-	 return fmt.Errorf("empty command")
+		return fmt.Errorf("empty command")
 	}
 
 	c := exec.Command(cmd[0], cmd[1:]...)
@@ -134,8 +134,18 @@ func (e *Executor) RunInteractive(cmd []string) error {
 	c.Dir = e.Dir
 
 	if len(e.Env) > 0 {
-	 c.Env = append(os.Environ(), e.Env...)
+		c.Env = append(os.Environ(), e.Env...)
 	}
 
 	return c.Run()
+}
+
+// RunInteractiveMultiple executes multiple commands sequentially with inherited stdio
+func (e *Executor) RunInteractiveMultiple(commands [][]string) error {
+	for i, cmd := range commands {
+		if err := e.RunInteractive(cmd); err != nil {
+			return fmt.Errorf("command %d failed: %w", i+1, err)
+		}
+	}
+	return nil
 }
